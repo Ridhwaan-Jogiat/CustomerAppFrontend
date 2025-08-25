@@ -1,0 +1,196 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h4>Customer Listing</h4>
+    </div>
+    <div class="card-body">
+      <!-- btn for creating a customer -->
+      <div class="mb-3">
+        <button class="btn btn-create" (click)="showCreateForm()">CREATE NEW CUSTOMER</button>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-create"
+        (click)="exportToCSV()"
+        [disabled]="customers.length === 0"
+      >
+        Export CSV
+      </button>
+
+      <!-- box for searching for customer  -->
+      <div class="search-box mb-3">
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            placeholder="Search customers..."
+            class="form-control"
+          />
+          <!-- btn for searching for customer -->
+          <button class="btn btn-sm" (click)="onSearch()">Search</button>
+        </div>
+      </div>
+
+      <!-- Table containing customer info -->
+      <div class="table-container">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <!-- table heaidngs -->
+              <th>First name</th>
+              <th>Surname</th>
+              <th>Email</th>
+              <th>Cellphone</th>
+              <th>Amount Total</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of customers">
+              <td>{{ customer.firstName }}</td>
+              <td>{{ customer.surname }}</td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.cellphone }}</td>
+              <td>{{ customer.amountTotal | number : '1.2-2' }}</td>
+              <td class="action-buttons text-center">
+                <!-- btn for viewing and editing customer info -->
+                <button class="btn btn-sm btn-primary me-1" (click)="editCustomer(customer)">
+                  View
+                </button>
+                <!-- btn for deleting customer info -->
+                <button class="btn btn-sm btn-danger" (click)="deleteCustomer(customer.id!)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="customers.length === 0" class="text-center py-3 text-muted">
+          No customers found
+        </div>
+        <div class="text-muted mt-2">Showing {{ customers.length }} row(s)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- form for adding a new customer -->
+  <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ isEditMode ? 'Edit Customer' : 'Customer Create' }}</h5>
+        <button type="button" class="btn-close" (click)="cancelForm()">×</button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveCustomer()">
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label text-end">Type</label>
+            <div class="col-sm-6">
+              <select class="form-select" [(ngModel)]="currentCustomer.type" name="type">
+                <option value="Person">Person</option>
+                <option value="Company">Company</option>
+              </select>
+              <div class="error-text" *ngIf="formErrors.type">
+                {{ formErrors.type }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label text-end">First Name</label>
+            <div class="col-sm-6">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="currentCustomer.firstName"
+                name="firstName"
+                placeholder="Please enter customer name"
+              />
+              <div class="error-text" *ngIf="formErrors.firstName">
+                {{ formErrors.firstName }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label text-end">Surname</label>
+            <div class="col-sm-6">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="currentCustomer.surname"
+                name="surname"
+                placeholder="Please enter customer surname"
+              />
+              <div class="error-text" *ngIf="formErrors.surname">
+                {{ formErrors.surname }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label text-end">Email</label>
+            <div class="col-sm-6">
+              <input
+                type="email"
+                class="form-control"
+                [(ngModel)]="currentCustomer.email"
+                name="email"
+                placeholder="Please ente customer email"
+              />
+              <div class="error-text" *ngIf="formErrors.email">
+                {{ formErrors.email }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label text-end">Cellphone</label>
+            <div class="col-sm-6">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="currentCustomer.cellphone"
+                name="cellphone"
+                placeholder="Please enter customer phone number"
+              />
+              <div class="error-text" *ngIf="formErrors.cellphone">
+                {{ formErrors.cellphone }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label text-end">Amount Total</label>
+            <div class="col-sm-6">
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="currentCustomer.amountTotal"
+                name="amountTotal"
+                step="0.01"
+                placeholder="0"
+              />
+              <div class="error-text" *ngIf="formErrors.amountTotal">
+                {{ formErrors.amountTotal }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-9 offset-sm-3">
+              <button type="button" class="btn btn-secondary me-2" (click)="cancelForm()">
+                BACK TO LIST
+              </button>
+              <button type="submit" class="btn btn-success">
+                {{ isEditMode ? 'UPDATE' : 'SAVE' }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
