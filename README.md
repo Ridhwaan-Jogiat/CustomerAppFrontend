@@ -1,59 +1,38 @@
-# CustomerApp
+## CustomerApp - Angular Customer Management Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+A modern, responsive Angular application for customer relationship management. Built with Angular 18+ and Bootstrap, this SPA provides an intuitive interface for managing customer data with real-time validation and seamless CRUD operations.
 
-## Development server
+### Live Demo
+**Application URL**: [https://customer-app-iota.vercel.app](https://customer-app-iota.vercel.app)
 
-To start a local development server, run:
+⚠️ **Note**: The backend API may take 20-30 seconds to respond on first load as it wakes up from sleep mode (hosted on Render free tier).
 
+### Key Features
+- **Responsive Design** that works seamlessly on desktop and mobile devices
+- **Real-time Search** functionality across all customer fields
+- **Form Validation** with immediate feedback for data integrity
+- **Modal Forms** for creating and editing customers
+- **Clean UI** built with Bootstrap 5 for professional appearance
+- **Standalone Components** using Angular 18+ architecture
+- **Type Safety** with TypeScript interfaces and models
+
+### Technical Stack
+- Angular 18+ with TypeScript
+- Bootstrap 5 for styling
+- Reactive Forms with validation
+- HTTPClient for API communication
+- Deployed on Vercel
+
+### Features Overview
+| Feature | Description |
+|---------|-------------|
+| Customer List | Paginated table with all customer records |
+| Search | Filter customers by name, email, phone |
+| Create Customer | Add new customers with validated forms |
+| Edit Customer | Update existing customer information |
+| Delete Customer | Remove customers with confirmation |
+
+### Local Development
 ```bash
+npm install
 ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
